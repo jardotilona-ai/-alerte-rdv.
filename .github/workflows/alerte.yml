@@ -1,0 +1,20 @@
+name: Alerte RDV commission médicale
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Vérifier les créneaux
+        env:
+          URL_RDV: ${{ secrets.URL_RDV }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python verifier_rdv.py
